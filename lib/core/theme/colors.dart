@@ -1,0 +1,28 @@
+import 'package:shefaa/core/utils/cubit/theme/theme_cubit.dart';
+import 'package:flutter/material.dart';
+
+class ColorsManager {
+  static bool get isDark => themeCubit.isDarkMode;
+
+  static const Color primaryColor = Color(0xFF5F89B9);
+  static const Color placeholder = Color(0xFF6B7280);
+  static const Color textPrimaryLight = Color(0xFF0F172A);
+  static const Color backgroundColorLight = Color(0xF6F7F7);
+
+  static const Color textPrimaryDark = Color(0xFFE6E9EF);
+  static const Color backgroundDark = Color(0xFF111827);
+  static const Color surfaceDark = Color(0xFF1F2937);
+
+  static Color get background => isDark ? backgroundDark : backgroundColorLight;
+
+  static Color get textPrimary => isDark ? textPrimaryDark : textPrimaryLight;
+
+  static Color get textSecondary => placeholder;
+
+  static Color get surfacePrimary => isDark ? surfaceDark : Colors.white;
+
+  static Color get primaryAction => primaryColor;
+
+  static const Color borderLight = Color(0xFFE5E7EB);
+  static Color get borderColor => isDark ? Colors.white24 : borderLight;
+}

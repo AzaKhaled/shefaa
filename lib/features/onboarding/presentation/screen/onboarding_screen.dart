@@ -1,0 +1,164 @@
+import 'package:flutter/material.dart';
+import 'package:shefaa/core/network/local/cache_helper.dart';
+import 'package:shefaa/core/theme/colors.dart';
+import 'package:shefaa/core/theme/text_styles.dart';
+import 'package:shefaa/core/utils/constants/assets_helper.dart';
+import 'package:shefaa/core/utils/constants/spacing.dart';
+import 'package:shefaa/core/utils/extensions/context_extension.dart';
+import 'package:shefaa/core/utils/constants/constants.dart';
+import 'package:shefaa/core/utils/constants/routes.dart';
+import 'package:shefaa/features/onboarding/data/models/onboarding_model.dart';
+import 'package:shefaa/features/onboarding/presentation/widgets/page_indicator.dart';
+import 'package:shefaa/features/onboarding/presentation/widgets/onboarding_page.dart';
+
+class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
+
+  @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  late PageController _pageController;
+  int _currentPage = 0;
+
+  final List<OnboardingModel> _onboardingPages = [
+    OnboardingModel(
+      title: 'Book doctors easily',
+      description:
+          'Find and schedule appointments with top specialists in just a few taps.',
+      image: AssetsHelper.doctor,
+    ),
+    OnboardingModel(
+      title: 'Expert doctors',
+      description:
+          'Connect with experienced and certified medical professionals for quality care.',
+      image: AssetsHelper.person,
+    ),
+    OnboardingModel(
+      title: 'Health at your fingertips',
+      description:
+          'Manage your health and appointments all in one convenient platform.',
+      image: AssetsHelper.doctor2,
+    ),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _nextPage() {
+    if (_currentPage < _onboardingPages.length - 1) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      _completeOnboarding();
+    }
+  }
+
+  void _skipOnboarding() {
+    _completeOnboarding();
+  }
+
+  void _completeOnboarding() async {
+    await CacheHelper.saveData(key: 'onboardingCompleted', value: true);
+    if (mounted) {
+      context.pushReplacement(Routes.login);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: ColorsManager.background,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Skip Button
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: _skipOnboarding,
+                    child: Text(
+                      appTranslation().get('skip'),
+                      style: TextStylesManager.regular14.copyWith(
+                        color: ColorsManager.primaryAction,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Pages
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentPage = index;
+                  });
+                },
+                itemCount: _onboardingPages.length,
+                itemBuilder: (context, index) {
+                  return OnboardingPage(model: _onboardingPages[index]);
+                },
+              ),
+            ),
+
+            // Page Indicator
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24.0),
+              child: PageIndicator(
+                currentPage: _currentPage,
+                totalPages: _onboardingPages.length,
+              ),
+            ),
+
+            // Next Button
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: SizedBox(
+                width: double.infinity,
+                height: 54,
+                child: ElevatedButton(
+                  onPressed: _nextPage,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorsManager.primaryAction,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 0,
+                  ),
+                  child: Text(
+                    _currentPage == _onboardingPages.length - 1
+                        ? appTranslation().get('login')
+                        : appTranslation().get('next'),
+                    style: TextStylesManager.bold16.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            verticalSpace24,
+          ],
+        ),
+      ),
+    );
+  }
+}
