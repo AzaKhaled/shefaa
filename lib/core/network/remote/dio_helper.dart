@@ -15,7 +15,7 @@ class DioHelper {
     try {
       final Response response = await getDio().get(
         url,
-        queryParameters: {if (search != null) 'q': search, ...?query},
+        queryParameters: {'q': ?search, ...?query},
         options: Options(
           headers: {
             if (token != null && token!.isNotEmpty)

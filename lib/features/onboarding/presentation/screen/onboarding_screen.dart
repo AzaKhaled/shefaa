@@ -3,6 +3,7 @@ import 'package:shefaa/core/network/local/cache_helper.dart';
 import 'package:shefaa/core/theme/colors.dart';
 import 'package:shefaa/core/theme/text_styles.dart';
 import 'package:shefaa/core/utils/constants/assets_helper.dart';
+import 'package:shefaa/core/utils/constants/primary/primary_elevated_button.dart';
 import 'package:shefaa/core/utils/constants/spacing.dart';
 import 'package:shefaa/core/utils/extensions/context_extension.dart';
 import 'package:shefaa/core/utils/constants/constants.dart';
@@ -33,7 +34,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       title: 'Expert doctors',
       description:
           'Connect with experienced and certified medical professionals for quality care.',
-      image: AssetsHelper.person,
+      image: AssetsHelper.doctor,
     ),
     OnboardingModel(
       title: 'Health at your fingertips',
@@ -73,7 +74,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _completeOnboarding() async {
     await CacheHelper.saveData(key: 'onboardingCompleted', value: true);
     if (mounted) {
-      context.pushReplacement(Routes.login);
+      context.pushReplacement(Routes.guest);
     }
   }
 
@@ -131,26 +132,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             // Next Button
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: SizedBox(
-                width: double.infinity,
+              child: PrimaryElevatedButton(
+                text: _currentPage == _onboardingPages.length - 1
+                    ? appTranslation().get('login')
+                    : appTranslation().get('next'),
+                onPressed: _nextPage,
                 height: 54,
-                child: ElevatedButton(
-                  onPressed: _nextPage,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorsManager.primaryAction,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: Text(
-                    _currentPage == _onboardingPages.length - 1
-                        ? appTranslation().get('login')
-                        : appTranslation().get('next'),
-                    style: TextStylesManager.bold16.copyWith(
-                      color: Colors.white,
-                    ),
-                  ),
+                radius: 12,
+                backgroundColor: ColorsManager.primaryAction,
+                textStyle: TextStylesManager.bold16.copyWith(
+                  color: Colors.white,
                 ),
               ),
             ),

@@ -7,7 +7,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: const Text('Home Screen'),
+        elevation: 0,
       ),
       body: const Center(
         child: Text('This is the Home Screen'),

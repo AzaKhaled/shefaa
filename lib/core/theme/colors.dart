@@ -7,7 +7,7 @@ class ColorsManager {
   static const Color primaryColor = Color(0xFF5F89B9);
   static const Color placeholder = Color(0xFF6B7280);
   static const Color textPrimaryLight = Color(0xFF0F172A);
-  static const Color backgroundColorLight = Color(0xF6F7F7);
+  static const Color backgroundColorLight = Color(0xFFF6F7F7);
 
   static const Color textPrimaryDark = Color(0xFFE6E9EF);
   static const Color backgroundDark = Color(0xFF111827);
@@ -25,4 +25,9 @@ class ColorsManager {
 
   static const Color borderLight = Color(0xFFE5E7EB);
   static Color get borderColor => isDark ? Colors.white24 : borderLight;
+
+  static Color get progressBackground => Colors.grey.withValues(alpha: 0.2);
+  static const Color ratingIcon = Colors.orange;
+  static Color get ratingBackground => Colors.orange.withValues(alpha: 0.1);
+  static Color get ratingText => Colors.orange.shade800;
 }
