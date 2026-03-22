@@ -18,7 +18,7 @@ void main() async {
 
   Bloc.observer = MyBlocObserver();
   final bool isDark = CacheHelper.getData(key: 'isDark') ?? false;
-  final bool isArabic = CacheHelper.getData(key: 'isArabicLang') ?? false;
+  final bool isArabic = CacheHelper.getData(key: 'isArabicLang') ?? true;
   final String translation = await rootBundle.loadString(
     'assets/translations/${isArabic ? 'ar' : 'en'}.json',
   );

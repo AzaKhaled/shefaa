@@ -3,6 +3,7 @@ import 'package:shefaa/features/appointment/presentation/screen/appointmen_scree
 import 'package:shefaa/features/doctors/presentation/screen/doctors_screen.dart';
 import 'package:shefaa/features/guest/presentation/screen/guest_screen.dart';
 import 'package:shefaa/features/home/presentation/screen/home_screen.dart';
+import 'package:shefaa/features/profile/presentation/screen/personal_information_screen.dart';
 import 'package:shefaa/features/register/presentation/screen/widget/otp_screen.dart';
 import '../../../features/login/presentation/screen/login_screen.dart';
 import 'package:shefaa/features/profile/presentation/screen/profile_screen.dart';
@@ -28,6 +29,7 @@ class Routes {
   static const String root = '/root';
   static const String doctorDetails = '/doctor_details';
   static const String bookAppointment = '/book_appointment';
+  static const String personalInformation = '/personal_information';
   static Map<String, WidgetBuilder> get routes => {
     login: (context) => LoginScreen(),
     home: (context) => const HomeScreen(),
@@ -42,5 +44,6 @@ class Routes {
     root:(context) => const RootScreen(),
     doctorDetails:(context) => const DoctorDetailsScreen(),
     bookAppointment:(context) => const BookAppointmentScreen(),
+    personalInformation:(context) => const PersonalInformationScreen(),
   };
 }

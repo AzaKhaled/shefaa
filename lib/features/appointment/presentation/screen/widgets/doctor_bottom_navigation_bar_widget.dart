@@ -27,9 +27,7 @@ class DoctorBottomNavigationBarWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                appTranslation().get('consultation_fee').isNotEmpty
-                    ? appTranslation().get('consultation_fee')
-                    : 'Consultation Fee',
+                appTranslation().get('consultation_fee'),
                 style: TextStylesManager.regular12.copyWith(
                   color: ColorsManager.textSecondary,
                 ),
@@ -61,11 +59,7 @@ class DoctorBottomNavigationBarWidget extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  appTranslation().get('book_appointment').isNotEmpty
-                      ? appTranslation().get('book_appointment')
-                      : (appTranslation().get('book_now').isNotEmpty
-                            ? appTranslation().get('book_now')
-                            : 'Book Appointment'),
+                  appTranslation().get('book_appointment'),
                   style: TextStylesManager.bold14.copyWith(
                     color: Colors.white,
                   ),

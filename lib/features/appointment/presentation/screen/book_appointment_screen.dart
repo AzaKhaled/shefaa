@@ -25,8 +25,9 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
       appBar: AppBar(
         backgroundColor: ColorsManager.background,
         elevation: 0,
+        scrolledUnderElevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: ColorsManager.textPrimary),
+          icon: Icon(Icons.arrow_back_ios, color: ColorsManager.textPrimary),
           onPressed: () => context.pop,
         ),
         title: Text(
@@ -186,10 +187,10 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                 // Navigate to next step
               }
             : null,
-        backgroundColor: ColorsManager.primaryAction,
+        backgroundColor: ColorsManager.primaryColor,
         radius: 24,
         icon: const Icon(
-          Icons.arrow_forward,
+          Icons.arrow_forward_ios,
           size: 20,
           color: Colors.white,
         ),

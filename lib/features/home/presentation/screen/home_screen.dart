@@ -10,6 +10,7 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         title: const Text('Home Screen'),
         elevation: 0,
+        automaticallyImplyLeading: false,
       ),
       body: const Center(
         child: Text('This is the Home Screen'),

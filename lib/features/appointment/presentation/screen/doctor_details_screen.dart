@@ -20,8 +20,9 @@ class DoctorDetailsScreen extends StatelessWidget {
     if (doctor == null) {
       return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: ColorsManager.textPrimary),
+            icon: Icon(Icons.arrow_back_ios, color: ColorsManager.textPrimary),
             onPressed: () => context.pop,
           ),
           elevation: 0,
@@ -36,8 +37,9 @@ class DoctorDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: ColorsManager.background,
         elevation: 0,
+        automaticallyImplyLeading: false,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: ColorsManager.textPrimary),
+          icon: Icon(Icons.arrow_back_ios, color: ColorsManager.textPrimary),
           onPressed: () => context.pop,
         ),
         title: Text(
@@ -55,7 +57,7 @@ class DoctorDetailsScreen extends StatelessWidget {
             verticalSpace24,
             DoctorAboutWidget(doctor: doctor),
             verticalSpace24,
-            const DoctorStatsWidget(),
+            DoctorStatsWidget(),
             verticalSpace24,
             DoctorLocationWidget(doctor: doctor),
             verticalSpace40,

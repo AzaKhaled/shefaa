@@ -61,6 +61,7 @@ class _AppointmenScreenState extends State<AppointmenScreen> {
     return Scaffold(
       backgroundColor: ColorsManager.background,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         title: Text(
           appTranslation().get('choose_doctor'),
@@ -71,7 +72,7 @@ class _AppointmenScreenState extends State<AppointmenScreen> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           children: [
             verticalSpace10,
@@ -83,7 +84,7 @@ class _AppointmenScreenState extends State<AppointmenScreen> {
             verticalSpace20,
             SearchBarWidget(controller: _searchController),
             verticalSpace20,
-            const FilterChipsWidget(),
+            FilterChipsWidget(),
             verticalSpace20,
             Expanded(
               child: ListView.separated(

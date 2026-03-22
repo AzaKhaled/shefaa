@@ -1,18 +1,4 @@
-// import 'package:flutter/material.dart';
-// import 'package:shefaa/core/theme/colors.dart';
-
-// class LoginScreen extends StatelessWidget {
-//   const LoginScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//        backgroundColor: ColorsManager.primaryAction,
-//       body: const Center(child: Text('This is the Login Screen')),
-//     );
-//   }
-// }
-import 'dart:ui'; // مهم جداً عشان ImageFilter
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:shefaa/core/theme/colors.dart';
 import 'package:shefaa/core/theme/text_styles.dart';
@@ -76,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Align(
                     alignment: AlignmentDirectional.centerStart,
                     child: Text(
-                      appTranslation().get('shefaa'),
+                      appTranslation().get('app_name'),
                       style: TextStylesManager.bold20.copyWith(
                         color: Colors.white,
                       ),

@@ -41,7 +41,7 @@ class DoctorBasicInfoWidget extends StatelessWidget {
         ),
         verticalSpace8,
         Text(
-          '${appTranslation().get('senior').isNotEmpty ? appTranslation().get('senior') : 'Senior'} ${doctor['specialty'] ?? ''}',
+          '${appTranslation().get('senior')} ${doctor['specialty'] ?? ''}',
           style: TextStylesManager.regular14.copyWith(
             color: ColorsManager.textSecondary,
           ),
@@ -52,17 +52,13 @@ class DoctorBasicInfoWidget extends StatelessWidget {
           children: [
             BadgeWidget(
               icon: Icons.medical_services_outlined,
-              text:
-                  doctor['specialty'] ??
-                  (appTranslation().get('specialist').isNotEmpty
-                      ? appTranslation().get('specialist')
-                      : 'Specialist'),
+              text: doctor['specialty'] ?? appTranslation().get('specialist'),
             ),
             horizontalSpace8,
             BadgeWidget(
               icon: Icons.access_time,
               text:
-                  '${doctor['exp'] ?? 0} ${appTranslation().get('years_exp').isNotEmpty ? appTranslation().get('years_exp') : 'yrs'}',
+                  '${doctor['exp'] ?? 0} ${appTranslation().get('years_exp')}',
             ),
           ],
         ),
@@ -83,7 +79,7 @@ class DoctorBasicInfoWidget extends StatelessWidget {
               ),
               horizontalSpace4,
               Text(
-                '${doctor['rating'] ?? 0.0} ${appTranslation().get('rating').isNotEmpty ? appTranslation().get('rating') : 'Rating'}',
+                '${doctor['rating'] ?? 0.0} ${appTranslation().get('rating')}',
                 style: TextStylesManager.bold12.copyWith(
                   color: ColorsManager.primaryAction,
                 ),

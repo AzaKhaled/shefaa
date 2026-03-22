@@ -25,21 +25,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final List<OnboardingModel> _onboardingPages = [
     OnboardingModel(
-      title: 'Book doctors easily',
-      description:
-          'Find and schedule appointments with top specialists in just a few taps.',
+      title: appTranslation().get('onboarding_title_1'),
+      description: appTranslation().get('onboarding_desc_1'),
       image: AssetsHelper.doctor,
     ),
     OnboardingModel(
-      title: 'Expert doctors',
-      description:
-          'Connect with experienced and certified medical professionals for quality care.',
+      title: appTranslation().get('onboarding_title_2'),
+      description: appTranslation().get('onboarding_desc_2'),
       image: AssetsHelper.doctor,
     ),
     OnboardingModel(
-      title: 'Health at your fingertips',
-      description:
-          'Manage your health and appointments all in one convenient platform.',
+      title: appTranslation().get('onboarding_title_3'),
+      description: appTranslation().get('onboarding_desc_3'),
       image: AssetsHelper.doctor2,
     ),
   ];
