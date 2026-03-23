@@ -3,6 +3,9 @@ import 'package:shefaa/features/appointment/presentation/screen/appointmen_scree
 import 'package:shefaa/features/doctors/presentation/screen/doctors_screen.dart';
 import 'package:shefaa/features/guest/presentation/screen/guest_screen.dart';
 import 'package:shefaa/features/home/presentation/screen/home_screen.dart';
+import 'package:shefaa/features/lab_results/presentation/screens/lab_results_screen.dart';
+import 'package:shefaa/features/medical_history/presentation/screens/medical_history_screen.dart';
+import 'package:shefaa/features/prescriptions/presentation/screens/prescriptions_screen.dart';
 import 'package:shefaa/features/profile/presentation/screen/personal_information_screen.dart';
 import 'package:shefaa/features/register/presentation/screen/widget/otp_screen.dart';
 import '../../../features/login/presentation/screen/login_screen.dart';
@@ -30,6 +33,11 @@ class Routes {
   static const String doctorDetails = '/doctor_details';
   static const String bookAppointment = '/book_appointment';
   static const String personalInformation = '/personal_information';
+  static const String medicalHistory = '/medical_history';
+  static const String medicalPrescriptions = '/prescriptions';
+
+  static const String labResults = '/lab_results';
+
   static Map<String, WidgetBuilder> get routes => {
     login: (context) => LoginScreen(),
     home: (context) => const HomeScreen(),
@@ -45,5 +53,8 @@ class Routes {
     doctorDetails:(context) => const DoctorDetailsScreen(),
     bookAppointment:(context) => const BookAppointmentScreen(),
     personalInformation:(context) => const PersonalInformationScreen(),
+    medicalHistory: (context) => const MedicalHistoryScreen(),
+    medicalPrescriptions: (context) => const PrescriptionsScreen(),
+    labResults: (context) => const LabResultsScreen(),
   };
 }

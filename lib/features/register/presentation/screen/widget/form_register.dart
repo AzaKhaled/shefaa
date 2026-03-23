@@ -71,7 +71,7 @@ class _FormRegisterState extends State<FormRegister> {
             ),
             verticalSpace8,
             PrimaryTextField(
-              fillColor: Colors.white,
+              // fillColor: Colors.white,
               controller: passwordController,
               hint: '123-456-789',
             ),
@@ -84,7 +84,7 @@ class _FormRegisterState extends State<FormRegister> {
             ),
             verticalSpace8,
             PrimaryTextField(
-              fillColor: Colors.white,
+              // fillColor: Colors.white,
               controller: passwordController,
               hint: '123-456-789',
             ),
@@ -97,7 +97,8 @@ class _FormRegisterState extends State<FormRegister> {
             ),
             verticalSpace8,
             PrimaryTextField(
-              fillColor: Colors.white,
+
+              //fillColor: Colors.white,
               controller: emailController,
 
               hint: appTranslation().get('email'),
@@ -132,7 +133,7 @@ class _FormRegisterState extends State<FormRegister> {
             ),
             verticalSpace8,
             PrimaryTextField(
-              fillColor: Colors.white,
+             // fillColor: Colors.white,
               controller: passwordController,
               hint: appTranslation().get('password'),
               isPassword: !isShowPassword,
@@ -154,7 +155,7 @@ class _FormRegisterState extends State<FormRegister> {
             ),
             verticalSpace8,
             PrimaryTextField(
-              fillColor: Colors.white,
+             // fillColor: Colors.white,
               controller: passwordController,
               hint: appTranslation().get('password'),
               isPassword: !isShowPassword,

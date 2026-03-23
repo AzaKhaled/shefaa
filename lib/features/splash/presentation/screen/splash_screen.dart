@@ -53,9 +53,9 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ],
               ),
-              child: const Icon(
+              child:  Icon(
                 Icons.shield,
-                color: Color(0xFF7BA2CC),
+                color: ColorsManager.primaryAction,
               ),
             ),
 

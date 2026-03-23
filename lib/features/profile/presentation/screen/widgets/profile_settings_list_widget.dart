@@ -34,7 +34,9 @@ class ProfileSettingsListWidget extends StatelessWidget {
         _SettingsTileWidget(
           title: appTranslation().get('medical_history'),
           icon: Icons.article_outlined,
-          onTap: () {},
+          onTap: () {
+            context.push(Routes.medicalHistory);
+          },
         ),
         verticalSpace12,
         _SettingsTileWidget(
@@ -55,7 +57,9 @@ class ProfileSettingsListWidget extends StatelessWidget {
           title: appTranslation().get('log_out'),
           icon: Icons.logout,
           isLogout: true,
-          onTap: () {},
+          onTap: () {
+            context.push(Routes.login);
+          },
         ),
       ],
     );
@@ -82,21 +86,31 @@ class _SettingsTileWidget extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         decoration: BoxDecoration(
-          color: isLogout ? Colors.red.withValues(alpha: 0.05) : ColorsManager.surfacePrimary,
+          color: isLogout
+              ? Colors.red.withValues(alpha: 0.05)
+              : ColorsManager.surfacePrimary,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: isLogout ? Colors.red.withValues(alpha: 0.1) : ColorsManager.borderColor),
+          border: Border.all(
+            color: isLogout
+                ? Colors.red.withValues(alpha: 0.1)
+                : ColorsManager.borderColor,
+          ),
         ),
         child: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: isLogout ? Colors.red.withValues(alpha: 0.1) : ColorsManager.primaryAction.withValues(alpha: 0.1),
+                color: isLogout
+                    ? Colors.red.withValues(alpha: 0.1)
+                    : ColorsManager.primaryAction.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 icon,
-                color: isLogout ? Colors.redAccent : ColorsManager.primaryAction,
+                color: isLogout
+                    ? Colors.redAccent
+                    : ColorsManager.primaryAction,
                 size: 20,
               ),
             ),
@@ -105,7 +119,9 @@ class _SettingsTileWidget extends StatelessWidget {
               child: Text(
                 title,
                 style: TextStylesManager.bold14.copyWith(
-                  color: isLogout ? Colors.redAccent : ColorsManager.textPrimary,
+                  color: isLogout
+                      ? Colors.redAccent
+                      : ColorsManager.textPrimary,
                 ),
               ),
             ),

@@ -21,7 +21,7 @@ class RegisterScreen extends StatelessWidget {
               verticalSpace16,
 
               Text(
-                appTranslation().get('shefaa'),
+                appTranslation().get('app_name'),
                 style: TextStylesManager.bold24.copyWith(
                   color: ColorsManager.primaryAction,
                 ),

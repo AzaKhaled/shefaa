@@ -17,9 +17,7 @@ class DoctorAboutWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            appTranslation().get('about').isNotEmpty
-                ? appTranslation().get('about')
-                : 'About',
+            appTranslation().get('about_doctor'),
             style: TextStylesManager.bold16.copyWith(
               color: ColorsManager.textPrimary,
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shefaa/core/theme/colors.dart';
 import 'package:shefaa/core/theme/text_styles.dart';
+import 'package:shefaa/core/utils/constants/constants.dart';
 import 'package:shefaa/core/utils/constants/primary/primary_text_field.dart';
 
 class GenderSelector extends StatelessWidget {
@@ -22,7 +23,10 @@ class GenderSelector extends StatelessWidget {
         borderRadius: BorderRadius.circular(25),
       ),
       child: Row(
-        children: [_genderOption("Male", 0), _genderOption("Female", 1)],
+        children: [
+          _genderOption(appTranslation().get("male"), 0),
+          _genderOption(appTranslation().get("female"), 1),
+        ],
       ),
     );
   }

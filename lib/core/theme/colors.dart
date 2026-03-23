@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class ColorsManager {
   static bool get isDark => themeCubit.isDarkMode;
 
-  static const Color primaryColor = Color(0xFF5F89B9);
+  static const Color primaryColor = Color(0xFF2C9C94);
+  static const Color secondaryColor = Color(0xFFC2DFDD);
   static const Color placeholder = Color(0xFF6B7280);
   static const Color textPrimaryLight = Color(0xFF0F172A);
   static const Color backgroundColorLight = Color(0xFFF6F7F7);
