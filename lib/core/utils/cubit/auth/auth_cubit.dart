@@ -12,6 +12,8 @@ import 'package:shefaa/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../constants/constants.dart';
+
 AuthCubit get authCubit => AuthCubit.get(navigatorKey.currentContext!);
 
 class AuthCubit extends Cubit<AuthState> {
@@ -75,8 +77,14 @@ class AuthCubit extends Cubit<AuthState> {
       },
       (response) {
         final data = response.data as Map<String, dynamic>?;
-        if (data != null && data['success'] == true) {
-          _handleLoginSuccess(data);
+        
+        bool isSuccess = data != null && 
+            (data['success'] == true || 
+             data['token'] != null || 
+             (data['message']?.toString().toLowerCase().contains('success') ?? false));
+
+        if (isSuccess) {
+          _handleLoginSuccess(data!);
           debugPrint('✅ Login Success: $data');
           emit(AuthLoginSuccessState());
         } else {
@@ -101,7 +109,11 @@ class AuthCubit extends Cubit<AuthState> {
 
     try {
       final response = await ApiService.registerUser(request);
-      if (response.success) {
+      
+      bool isSuccess = response.success ||
+          (response.message?.toLowerCase().contains('success') ?? false);
+
+      if (isSuccess) {
         debugPrint('✅ Register Success');
         emit(AuthRegisterSuccessState());
       } else {

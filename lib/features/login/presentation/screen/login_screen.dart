@@ -13,24 +13,30 @@ import 'package:shefaa/core/utils/extensions/context_extension.dart';
 import 'package:shefaa/core/utils/cubit/auth/auth_cubit.dart';
 import 'package:shefaa/core/utils/cubit/auth/auth_state.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final cubit = AuthCubit.get(context);
 
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthLoginSuccessState) {
-          context.pushNamedAndRemoveUntil(Routes.home, (route) => false);
+          debugPrint('Navigate to Root Screen');
+          context.pushNamedAndRemoveUntil(Routes.root, (route) => false);
         } else if (state is AuthLoginErrorState) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(
-                state.message,
-              ),
+              content: Text(state.message),
+              backgroundColor: Colors.red,
             ),
           );
         }
@@ -146,6 +152,12 @@ class LoginScreen extends StatelessWidget {
                                         hint: appTranslation().get(
                                           'mobile_or_email',
                                         ),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter your email';
+                                          }
+                                          return null;
+                                        },
                                         prefixIcon: const Icon(
                                           Icons.email_outlined,
                                         ),
@@ -164,6 +176,12 @@ class LoginScreen extends StatelessWidget {
                                         controller: cubit.passwordController,
                                         hint: appTranslation().get('password'),
                                         isPassword: !cubit.isShowPassword,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter your password';
+                                          }
+                                          return null;
+                                        },
                                         prefixIcon:
                                             const Icon(Icons.lock_outline),
                                         suffixIcon: IconButton(
@@ -185,7 +203,7 @@ class LoginScreen extends StatelessWidget {
                                           child: Text(
                                             appTranslation()
                                                 .get('forgot_password'),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Colors.white70,
                                             ),
                                           ),
@@ -215,7 +233,7 @@ class LoginScreen extends StatelessWidget {
                                               child: Text(
                                                 appTranslation()
                                                     .get('register'),
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: Colors.white,
                                                 ),
                                               ),
