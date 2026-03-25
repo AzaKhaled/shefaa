@@ -1,6 +1,7 @@
-const String baseUrl = 'https://app.estawdaa.com/platform';
+const String baseUrl = 'http://192.168.1.9:8000';
 
-const String loginApi = '/login';
+const String loginApi = '/api/v1/auth/login';
+const String registerApi = '/api/v1/auth/register';
 
 const String pendingApprovals = '/pending-approvals';
 

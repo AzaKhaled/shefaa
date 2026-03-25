@@ -19,6 +19,17 @@ extension NavigationExtension on BuildContext {
     arguments: arguments,
   );
 
+  void pushNamedAndRemoveUntil<ARG>(
+    String routeName,
+    RoutePredicate predicate, {
+    ARG? arguments,
+  }) => Navigator.pushNamedAndRemoveUntil(
+    this,
+    routeName,
+    predicate,
+    arguments: arguments,
+  );
+
   void get pop => Navigator.pop(this);
 
   ARG? getArg<ARG>() {

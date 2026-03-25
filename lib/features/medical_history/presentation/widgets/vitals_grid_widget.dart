@@ -44,22 +44,25 @@ class VitalsGridWidget extends StatelessWidget {
           childAspectRatio: 1.2,
           children: [
             _buildVitalCard(
+              textColor: ColorsManager.textPrimaryDark,
+
               title: appTranslation().get('pulse'),
               value: '72',
               unit: 'bpm',
+
               icon: Icons.favorite,
-              iconColor: Colors.deepOrange.shade300,
+              iconColor: Color(0xFFF43F5E),
               backgroundColor: ColorsManager.primaryColor,
               badge: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.deepOrange.shade100,
+                  color: Color(0xFFFFDBCE),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   'Normal',
                   style: TextStylesManager.regular10.copyWith(
-                    color: Colors.deepOrange.shade800,
+                    color: Color(0xFFF43F5E),
                   ),
                 ),
               ),
@@ -79,6 +82,8 @@ class VitalsGridWidget extends StatelessWidget {
               iconColor: ColorsManager.primaryColor,
             ),
             _buildVitalCard(
+              textColor: ColorsManager.textPrimaryDark,
+
               title: appTranslation().get('glucose'),
               value: '94',
               unit: 'mg/dL',
@@ -176,6 +181,7 @@ class VitalsGridWidget extends StatelessWidget {
     required IconData icon,
     required Color iconColor,
     Color? backgroundColor,
+    Color? textColor,
     Widget? badge,
   }) {
     return Container(
@@ -192,7 +198,7 @@ class VitalsGridWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Icon(icon, color: iconColor, size: 24),
-              if (badge != null) badge,
+              ?badge,
             ],
           ),
           const Spacer(),
@@ -203,14 +209,14 @@ class VitalsGridWidget extends StatelessWidget {
               Text(
                 value,
                 style: TextStylesManager.bold24.copyWith(
-                  color: ColorsManager.textPrimary,
+                  color: textColor ?? ColorsManager.textPrimary,
                 ),
               ),
               horizontalSpace4,
               Text(
                 unit,
                 style: TextStylesManager.regular12.copyWith(
-                  color: ColorsManager.textSecondary,
+                  color: textColor ?? ColorsManager.textSecondary,
                 ),
               ),
             ],
@@ -219,7 +225,7 @@ class VitalsGridWidget extends StatelessWidget {
           Text(
             title,
             style: TextStylesManager.bold10.copyWith(
-              color: ColorsManager.textSecondary,
+              color: textColor ?? ColorsManager.textSecondary,
             ),
           ),
         ],

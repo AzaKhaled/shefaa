@@ -17,9 +17,7 @@ class DoctorLocationWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            appTranslation().get('location').isNotEmpty
-                ? appTranslation().get('location')
-                : 'Location',
+            appTranslation().get('location'),
             style: TextStylesManager.bold16.copyWith(
               color: ColorsManager.textPrimary,
             ),

@@ -6,4 +6,5 @@ class AssetsHelper {
   static const String doctor = 'assets/images/doctor.png';
   static const String doctor2 = 'assets/images/doctor2.png';
   static const String person = 'assets/images/person.png';
+  static const String pharmacy = 'assets/images/pharmacy.jpg';
 }

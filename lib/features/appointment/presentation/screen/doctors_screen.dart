@@ -9,14 +9,14 @@ import 'widgets/doctor_card_widget.dart';
 import 'widgets/filter_chips_widget.dart';
 import 'widgets/search_bar_widget.dart';
 
-class AppointmenScreen extends StatefulWidget {
-  const AppointmenScreen({super.key});
+class DoctorsScreen extends StatefulWidget {
+  const DoctorsScreen({super.key});
 
   @override
-  State<AppointmenScreen> createState() => _AppointmenScreenState();
+  State<DoctorsScreen> createState() => _DoctorsScreenState();
 }
 
-class _AppointmenScreenState extends State<AppointmenScreen> {
+class _DoctorsScreenState extends State<DoctorsScreen> {
   final TextEditingController _searchController = TextEditingController();
 
   final List<Map<String, dynamic>> _doctors = [

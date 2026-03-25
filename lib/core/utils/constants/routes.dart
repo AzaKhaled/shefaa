@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:shefaa/features/appointment/presentation/screen/appointmen_screen.dart';
-import 'package:shefaa/features/doctors/presentation/screen/doctors_screen.dart';
+import 'package:shefaa/features/appointment/presentation/screen/doctors_screen.dart';
 import 'package:shefaa/features/guest/presentation/screen/guest_screen.dart';
 import 'package:shefaa/features/home/presentation/screen/home_screen.dart';
 import 'package:shefaa/features/lab_results/presentation/screens/lab_results_screen.dart';
 import 'package:shefaa/features/medical_history/presentation/screens/medical_history_screen.dart';
-import 'package:shefaa/features/prescriptions/presentation/screens/prescriptions_screen.dart';
+import 'package:shefaa/features/radiology/presentation/screens/radiology_reports_screen.dart';
 import 'package:shefaa/features/profile/presentation/screen/personal_information_screen.dart';
 import 'package:shefaa/features/register/presentation/screen/widget/otp_screen.dart';
 import '../../../features/login/presentation/screen/login_screen.dart';
 import 'package:shefaa/features/profile/presentation/screen/profile_screen.dart';
 import 'package:shefaa/features/register/presentation/screen/register_screen.dart';
 import 'package:shefaa/features/onboarding/presentation/screen/onboarding_screen.dart';
-
 import '../../../features/splash/presentation/screen/splash_screen.dart';
 import 'package:shefaa/features/root/presentation/screen/root_screen.dart';
 import 'package:shefaa/features/appointment/presentation/screen/doctor_details_screen.dart';
 import 'package:shefaa/features/appointment/presentation/screen/book_appointment_screen.dart';
+import 'package:shefaa/features/pharmacies/presentation/screens/pharmacy_details_screen.dart';
 
 class Routes {
   static const String splash = '/splash';
@@ -24,7 +23,6 @@ class Routes {
   static const String home = '/home';
   static const String login = '/login';
   static const String register = '/register';
-  static const String appointment = '/appointment';
   static const String doctors = '/doctors';
   static const String profile = '/profile';
   static const String guest = '/guest';
@@ -34,7 +32,8 @@ class Routes {
   static const String bookAppointment = '/book_appointment';
   static const String personalInformation = '/personal_information';
   static const String medicalHistory = '/medical_history';
-  static const String medicalPrescriptions = '/prescriptions';
+  static const String radiologyReports = '/radiology_reports';
+  static const String pharmacyDetails = '/pharmacy_details';
 
   static const String labResults = '/lab_results';
 
@@ -44,7 +43,6 @@ class Routes {
     register: (context) => RegisterScreen(),
     onboarding: (context) => const OnboardingScreen(),
     splash: (context) => SplashScreen(),
-    appointment: (context) => AppointmenScreen(),
     doctors: (context) => DoctorsScreen(),
     profile: (context) => ProfileScreen(),
     guest: (context) => GuestScreen(),
@@ -54,7 +52,10 @@ class Routes {
     bookAppointment:(context) => const BookAppointmentScreen(),
     personalInformation:(context) => const PersonalInformationScreen(),
     medicalHistory: (context) => const MedicalHistoryScreen(),
-    medicalPrescriptions: (context) => const PrescriptionsScreen(),
+
     labResults: (context) => const LabResultsScreen(),
+  
+    radiologyReports: (context) => const RadiologyReportsScreen(),
+    pharmacyDetails: (context) => const PharmacyDetailsScreen(),
   };
 }

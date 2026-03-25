@@ -16,15 +16,9 @@ class MedicalFilesListWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                appTranslation().get('view_all'),
-                style: TextStylesManager.bold12.copyWith(color: ColorsManager.primaryColor),
-              ),
-            ),
+
             Text(
               appTranslation().get('medical_records'),
               style: TextStylesManager.bold14.copyWith(color: ColorsManager.textSecondary),
@@ -38,7 +32,7 @@ class MedicalFilesListWidget extends StatelessWidget {
           icon: Icons.receipt_long,
           iconColor: ColorsManager.primaryColor,
           onTap: () {
-            context.push(Routes.medicalPrescriptions);
+          //  context.push(Routes.medicalPrescriptions);
           },
         ),
         verticalSpace12,
@@ -57,6 +51,9 @@ class MedicalFilesListWidget extends StatelessWidget {
           subtitle: 'X-Ray, MRI (2 ${appTranslation().get('files')})',
           icon: Icons.medical_services_outlined,
           iconColor: Colors.brown.shade400,
+          onTap: () {
+            context.push(Routes.radiologyReports);
+          },
         ),
         verticalSpace12,
         _buildFileItem(
@@ -64,6 +61,16 @@ class MedicalFilesListWidget extends StatelessWidget {
           subtitle: appTranslation().get('summary_last_visit'),
           icon: Icons.description,
           iconColor: Colors.blueGrey,
+        ),
+        verticalSpace12,
+        _buildFileItem(
+          title: appTranslation().get('report'),
+          subtitle: appTranslation().get('summary_last_visit'),
+          icon: Icons.report,
+          iconColor: Colors.blueGrey,
+          onTap: () {
+            context.push(Routes.radiologyReports);
+          },
         ),
       ],
     );

@@ -84,7 +84,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
 
-            const SizedBox(height: 15),
+           verticalSpace14,
 
             ClipRRect(
               borderRadius: BorderRadius.circular(10),

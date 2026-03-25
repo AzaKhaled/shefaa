@@ -6,6 +6,8 @@ import 'package:shefaa/core/network/remote/dio_helper.dart';
 import 'package:shefaa/core/utils/constants/constants.dart';
 import 'package:shefaa/core/utils/cubit/auth/auth_state.dart';
 import 'package:shefaa/core/models/user_model.dart';
+import 'package:shefaa/core/models/register_request.dart';
+import 'package:shefaa/core/network/remote/api_service.dart';
 import 'package:shefaa/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,16 +19,42 @@ class AuthCubit extends Cubit<AuthState> {
 
   static AuthCubit get(BuildContext context) => BlocProvider.of(context);
 
-  final TextEditingController emailController = .new();
-  final TextEditingController passwordController = .new();
+  // Login Controllers
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
-  bool _isShowPassword = false;
+  // Register Controllers
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController nationalIdController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
 
-  bool get isShowPassword => _isShowPassword;
+  bool isShowPassword = false;
+  int selectedGender = 0; // 0 for male, 1 for female
 
-  set isShowPassword(bool value) {
-    _isShowPassword = value;
+  void changePasswordVisibility() {
+    isShowPassword = !isShowPassword;
     emit(AuthShowPasswordState());
+  }
+
+  void changeGender(int value) {
+    selectedGender = value;
+    emit(AuthUpdateUIState());
+  }
+
+  Future<void> selectDate(BuildContext context) async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      dateController.text = "${picked.month}/${picked.day}/${picked.year}";
+      emit(AuthUpdateUIState());
+    }
   }
 
   UserModel? userModel;
@@ -36,7 +64,7 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await DioHelper.postData(
       url: loginApi,
       data: {
-        'email': emailController.text.trim(),
+        'login': emailController.text.trim(),
         'password': passwordController.text.trim(),
       },
     );
@@ -47,21 +75,57 @@ class AuthCubit extends Cubit<AuthState> {
       },
       (response) {
         final data = response.data as Map<String, dynamic>?;
-        _handleLoginSuccess(data!);
-        debugPrint('✅ Login Success: $data');
-        emit(AuthLoginSuccessState());
+        if (data != null && data['success'] == true) {
+          _handleLoginSuccess(data);
+          debugPrint('✅ Login Success: $data');
+          emit(AuthLoginSuccessState());
+        } else {
+          emit(AuthLoginErrorState(message: data?['message'] ?? 'Login failed'));
+        }
       },
     );
+  }
+
+  Future<void> register() async {
+    emit(AuthRegisterLoadingState());
+    final request = RegisterRequest(
+      name: fullNameController.text,
+      phone: phoneController.text,
+      email: emailController.text,
+      password: passwordController.text,
+      passwordConfirmation: confirmPasswordController.text,
+      nationalId: nationalIdController.text,
+      dateOfBirth: dateController.text,
+      gender: selectedGender == 0 ? 'male' : 'female',
+    );
+
+    try {
+      final response = await ApiService.registerUser(request);
+      if (response.success) {
+        debugPrint('✅ Register Success');
+        emit(AuthRegisterSuccessState());
+      } else {
+        emit(
+          AuthRegisterErrorState(
+            message: response.message ?? 'Registration failed',
+          ),
+        );
+      }
+    } catch (e) {
+      emit(AuthRegisterErrorState(message: e.toString()));
+    }
   }
 
   void _handleLoginSuccess(Map<String, dynamic> data) {
     token = data['token'] as String?;
     CacheHelper.saveData(key: 'auth_token', value: token);
-    userModel = UserModel.fromJson(data['user'] as Map<String, dynamic>);
-    CacheHelper.saveData(
-      key: 'cached_user',
-      value: jsonEncode(userModel!.toJson()),
-    );
+    if (data['user'] != null) {
+      userModel = UserModel.fromJson(data['user'] as Map<String, dynamic>);
+      CacheHelper.saveData(
+        key: 'cached_user',
+        value: jsonEncode(userModel!.toJson()),
+      );
+    }
     _clearControllers();
   }
 
@@ -82,5 +146,10 @@ class AuthCubit extends Cubit<AuthState> {
   void _clearControllers() {
     emailController.clear();
     passwordController.clear();
+    fullNameController.clear();
+    phoneController.clear();
+    nationalIdController.clear();
+    confirmPasswordController.clear();
+    dateController.clear();
   }
 }

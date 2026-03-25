@@ -15,3 +15,15 @@ class AuthLoginErrorState extends AuthState {
 }
 
 class AuthUserLoadedFromCacheState extends AuthState {}
+
+class AuthRegisterLoadingState extends AuthState {}
+
+class AuthRegisterSuccessState extends AuthState {}
+
+class AuthRegisterErrorState extends AuthState {
+  final String message;
+
+  AuthRegisterErrorState({required this.message});
+}
+
+class AuthUpdateUIState extends AuthState {}

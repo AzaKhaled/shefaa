@@ -24,7 +24,10 @@ class PersonalInformationScreen extends StatelessWidget {
             elevation: 0,
             automaticallyImplyLeading: false,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: ColorsManager.textPrimary),
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: ColorsManager.textPrimary,
+              ),
               onPressed: () => Navigator.pop(context),
             ),
             title: Text(
@@ -95,15 +98,6 @@ class PersonalInformationScreen extends StatelessWidget {
                             readOnly: true,
                           ),
                         ),
-                        horizontalSpace16,
-                        Expanded(
-                          child: _buildField(
-                            label: appTranslation().get('blood_group'),
-                            hint: 'A+',
-                            suffixIcon: Icons.keyboard_arrow_down,
-                            readOnly: true,
-                          ),
-                        ),
                       ],
                     ),
                   ],
@@ -148,7 +142,11 @@ class PersonalInformationScreen extends StatelessWidget {
                 PrimaryElevatedButton(
                   text: appTranslation().get('save_changes'),
                   onPressed: () {},
-                  icon: const Icon(Icons.save_outlined, color: Colors.white, size: 20),
+                  icon: const Icon(
+                    Icons.save_outlined,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
                 verticalSpace16,
                 Text(
@@ -176,7 +174,10 @@ class PersonalInformationScreen extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: ColorsManager.surfacePrimary,
-            border: Border.all(color: ColorsManager.primaryColor.withValues(alpha: 0.1), width: 4),
+            border: Border.all(
+              color: ColorsManager.primaryColor.withValues(alpha: 0.1),
+              width: 4,
+            ),
             image: const DecorationImage(
               image: AssetImage(AssetsHelper.person),
               fit: BoxFit.cover,
@@ -226,9 +227,7 @@ class PersonalInformationScreen extends StatelessWidget {
               horizontalSpace8,
               Text(
                 title,
-                style: TextStylesManager.bold14.copyWith(
-                  color: color,
-                ),
+                style: TextStylesManager.bold14.copyWith(color: color),
               ),
             ],
           ),
@@ -259,7 +258,9 @@ class PersonalInformationScreen extends StatelessWidget {
           controller: TextEditingController(text: hint),
           hint: '',
           readOnly: readOnly,
-          suffixIcon: suffixIcon != null ? Icon(suffixIcon, color: ColorsManager.textSecondary, size: 20) : null,
+          suffixIcon: suffixIcon != null
+              ? Icon(suffixIcon, color: ColorsManager.textSecondary, size: 20)
+              : null,
           fillColor: ColorsManager.background,
         ),
       ],

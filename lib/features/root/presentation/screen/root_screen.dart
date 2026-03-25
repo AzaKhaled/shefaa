@@ -5,9 +5,9 @@ import 'package:shefaa/core/theme/text_styles.dart';
 import 'package:shefaa/core/utils/constants/constants.dart';
 import 'package:shefaa/core/utils/cubit/theme/theme_cubit.dart';
 import 'package:shefaa/core/utils/cubit/theme/theme_state.dart';
-import 'package:shefaa/features/appointment/presentation/screen/appointmen_screen.dart';
-import 'package:shefaa/features/doctors/presentation/screen/doctors_screen.dart';
+import 'package:shefaa/features/appointment/presentation/screen/doctors_screen.dart';
 import 'package:shefaa/features/home/presentation/screen/home_screen.dart';
+import 'package:shefaa/features/pharmacies/presentation/screens/pharmacies_screen.dart';
 import 'package:shefaa/features/profile/presentation/screen/profile_screen.dart';
 
 class RootScreen extends StatefulWidget {
@@ -33,16 +33,14 @@ class _RootScreenState extends State<RootScreen> {
       builder: (context, state) {
         final screens = [
           HomeScreen(),
-          AppointmenScreen(),
+          //  AppointmenScreen(),
           DoctorsScreen(),
+          const PharmaciesScreen(),
           ProfileScreen(),
         ];
 
         return Scaffold(
-          body: IndexedStack(
-            index: _currentIndex,
-            children: screens,
-          ),
+          body: IndexedStack(index: _currentIndex, children: screens),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _currentIndex,
             onTap: (index) {
@@ -55,7 +53,9 @@ class _RootScreenState extends State<RootScreen> {
             unselectedItemColor: ColorsManager.textSecondary,
             backgroundColor: ColorsManager.surfacePrimary,
             selectedLabelStyle: TextStylesManager.bold10.copyWith(height: 1.5),
-            unselectedLabelStyle: TextStylesManager.regular10.copyWith(height: 1.5),
+            unselectedLabelStyle: TextStylesManager.regular10.copyWith(
+              height: 1.5,
+            ),
             items: [
               BottomNavigationBarItem(
                 icon: const Padding(
@@ -68,17 +68,17 @@ class _RootScreenState extends State<RootScreen> {
                 ),
                 label: appTranslation().get('home'),
               ),
-              BottomNavigationBarItem(
-                icon: const Padding(
-                  padding: EdgeInsets.only(bottom: 4.0),
-                  child: Icon(Icons.calendar_today_outlined),
-                ),
-                activeIcon: const Padding(
-                  padding: EdgeInsets.only(bottom: 4.0),
-                  child: Icon(Icons.calendar_today),
-                ),
-                label: appTranslation().get('appointments'),
-              ),
+              // BottomNavigationBarItem(
+              //   icon: const Padding(
+              //     padding: EdgeInsets.only(bottom: 4.0),
+              //     child: Icon(Icons.calendar_today_outlined),
+              //   ),
+              //   activeIcon: const Padding(
+              //     padding: EdgeInsets.only(bottom: 4.0),
+              //     child: Icon(Icons.calendar_today),
+              //   ),
+              //   label: appTranslation().get('appointments'),
+              // ),
               BottomNavigationBarItem(
                 icon: const Padding(
                   padding: EdgeInsets.only(bottom: 4.0),
@@ -89,6 +89,17 @@ class _RootScreenState extends State<RootScreen> {
                   child: Icon(Icons.people),
                 ),
                 label: appTranslation().get('doctors'),
+              ),
+              BottomNavigationBarItem(
+                icon: const Padding(
+                  padding: EdgeInsets.only(bottom: 4.0),
+                  child: Icon(Icons.local_pharmacy_outlined),
+                ),
+                activeIcon: const Padding(
+                  padding: EdgeInsets.only(bottom: 4.0),
+                  child: Icon(Icons.local_pharmacy),
+                ),
+                label: appTranslation().get('pharmacies'),
               ),
               BottomNavigationBarItem(
                 icon: const Padding(

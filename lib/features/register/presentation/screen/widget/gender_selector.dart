@@ -19,7 +19,7 @@ class GenderSelector extends StatelessWidget {
     return Container(
       height: 55,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: ColorsManager.surfacePrimary,
         borderRadius: BorderRadius.circular(25),
       ),
       child: Row(
@@ -43,13 +43,13 @@ class GenderSelector extends StatelessWidget {
           decoration: BoxDecoration(
             color: isSelected
                 ? ColorsManager.primaryAction
-                : Colors.transparent,
+                : ColorsManager.background,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
             title,
             style: TextStylesManager.bold16.copyWith(
-              color: isSelected ? Colors.white : Colors.grey,
+              color: isSelected ? Colors.white : ColorsManager.textSecondary,
             ),
           ),
         ),
@@ -69,7 +69,7 @@ class DateField extends StatelessWidget {
     return PrimaryTextField(
       controller: controller,
       hint: 'mm/dd/yyyy',
-      fillColor: Colors.white,
+      fillColor: ColorsManager.background,
       readOnly: true,
       onTap: onTap,
     );
