@@ -1,167 +1,166 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shefaa/core/di/injections.dart';
 import 'package:shefaa/core/theme/colors.dart';
 import 'package:shefaa/core/theme/text_styles.dart';
 import 'package:shefaa/core/utils/constants/assets_helper.dart';
 import 'package:shefaa/core/utils/constants/constants.dart';
 import 'package:shefaa/core/utils/constants/spacing.dart';
-import 'package:shefaa/core/utils/cubit/theme/theme_cubit.dart';
-import 'package:shefaa/core/utils/cubit/theme/theme_state.dart';
 import 'package:shefaa/core/utils/constants/primary/primary_text_field.dart';
 import 'package:shefaa/core/utils/constants/primary/primary_elevated_button.dart';
+import 'package:shefaa/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:shefaa/features/profile/presentation/cubit/profile_state.dart';
 
 class PersonalInformationScreen extends StatelessWidget {
   const PersonalInformationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeCubit, ThemeState>(
-      builder: (context, state) {
-        return Scaffold(
-          backgroundColor: ColorsManager.background,
-          appBar: AppBar(
+    return BlocProvider(
+      create: (context) => sl<ProfileCubit>()..getPatientProfile(),
+      child: BlocBuilder<ProfileCubit, ProfileState>(
+        builder: (context, state) {
+          var cubit = ProfileCubit.get(context);
+          var user = cubit.profileModel?.data?.user;
+          var patient = cubit.profileModel?.data?.patient;
+
+          return Scaffold(
             backgroundColor: ColorsManager.background,
-            elevation: 0,
-            automaticallyImplyLeading: false,
-            leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: ColorsManager.textPrimary,
-              ),
-              onPressed: () => Navigator.pop(context),
-            ),
-            title: Text(
-              appTranslation().get('personal_information'),
-              style: TextStylesManager.bold16.copyWith(
-                color: ColorsManager.textPrimary,
-              ),
-            ),
-            centerTitle: true,
-            actions: [
-              IconButton(
-                icon: Icon(Icons.check, color: ColorsManager.primaryColor),
-                onPressed: () {
-                  // Save action
-                },
-              ),
-            ],
-          ),
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              children: [
-                verticalSpace24,
-                _buildProfileImage(),
-                verticalSpace12,
-                Text(
-                  'Alex Johnson',
-                  style: TextStylesManager.bold18.copyWith(
-                    color: ColorsManager.textPrimary,
-                  ),
+            appBar: AppBar(
+              backgroundColor: ColorsManager.background,
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: ColorsManager.textPrimary,
                 ),
-                verticalSpace4,
-                Text(
-                  'Patient ID: #HC-88291',
-                  style: TextStylesManager.regular14.copyWith(
-                    color: ColorsManager.textSecondary,
-                  ),
+                onPressed: () => Navigator.pop(context),
+              ),
+              title: Text(
+                appTranslation().get('personal_information'),
+                style: TextStylesManager.bold16.copyWith(
+                  color: ColorsManager.textPrimary,
                 ),
-                verticalSpace32,
-                _buildSection(
-                  title: appTranslation().get('basic_details'),
-                  icon: Icons.person_outline,
-                  color: ColorsManager.primaryAction,
-                  children: [
-                    _buildField(
-                      label: appTranslation().get('full_name'),
-                      hint: 'Alex Johnson',
-                    ),
-                    verticalSpace16,
-                    _buildField(
-                      label: appTranslation().get('national_id'),
-                      hint: 'A-987654321',
-                    ),
-                    verticalSpace16,
-                    _buildField(
-                      label: appTranslation().get('date_of_birth'),
-                      hint: '12/05/1992',
-                      suffixIcon: Icons.calendar_today_outlined,
-                    ),
-                    verticalSpace16,
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildField(
-                            label: appTranslation().get('gender'),
-                            hint: 'Male',
-                            suffixIcon: Icons.keyboard_arrow_down,
-                            readOnly: true,
-                          ),
+              ),
+              centerTitle: true,
+            ),
+            body: state is ProfileLoadingState
+                ? const Center(child: CircularProgressIndicator())
+                : state is ProfileErrorState
+                    ? Center(child: Text(state.error))
+                    : SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Column(
+                          children: [
+                            verticalSpace24,
+                            _buildProfileImage(),
+                            verticalSpace12,
+                            Text(
+                              user?.name ?? '---',
+                              style: TextStylesManager.bold18.copyWith(
+                                color: ColorsManager.textPrimary,
+                              ),
+                            ),
+                            verticalSpace4,
+                            Text(
+                              'Patient ID: #${patient?.patientCode ?? '---'}',
+                              style: TextStylesManager.regular14.copyWith(
+                                color: ColorsManager.textSecondary,
+                              ),
+                            ),
+                            verticalSpace32,
+                            _buildSection(
+                              title: appTranslation().get('basic_details'),
+                              icon: Icons.person_outline,
+                              color: ColorsManager.primaryAction,
+                              children: [
+                                _buildField(
+                                  label: appTranslation().get('full_name'),
+                                  value: user?.name ?? '',
+                                ),
+                                verticalSpace16,
+                                _buildField(
+                                  label: appTranslation().get('national_id'),
+                                  value: patient?.nationalId ?? '',
+                                ),
+                                verticalSpace16,
+                                _buildField(
+                                  label: appTranslation().get('date_of_birth'),
+                                  value: patient?.dateOfBirth?.split('T').first ?? '',
+                                  suffixIcon: Icons.calendar_today_outlined,
+                                ),
+                                verticalSpace16,
+                                _buildField(
+                                  label: appTranslation().get('gender'),
+                                  value: patient?.gender ?? '',
+                                  suffixIcon: Icons.keyboard_arrow_down,
+                                  readOnly: true,
+                                ),
+                              ],
+                            ),
+                            verticalSpace24,
+                            _buildSection(
+                              title: appTranslation().get('contact_details'),
+                              icon: Icons.phone_outlined,
+                              color: ColorsManager.primaryAction,
+                              children: [
+                                _buildField(
+                                  label: appTranslation().get('phone_number'),
+                                  value: user?.phone ?? '',
+                                  suffixIcon: Icons.phone_iphone_outlined,
+                                ),
+                                verticalSpace16,
+                                _buildField(
+                                  label: appTranslation().get('email'),
+                                  value: user?.email ?? '',
+                                  suffixIcon: Icons.email_outlined,
+                                ),
+                              ],
+                            ),
+                            verticalSpace24,
+                            _buildSection(
+                              title: appTranslation().get('emergency_contact'),
+                              icon: Icons.emergency_outlined,
+                              color: Colors.redAccent,
+                              children: [
+                                _buildField(
+                                  label: appTranslation().get('contact_name'),
+                                  value: patient?.emergencyContactName ?? '---',
+                                ),
+                                verticalSpace16,
+                                _buildField(
+                                  label: appTranslation().get('phone_number'),
+                                  value: patient?.emergencyContactPhone ?? '---',
+                                  suffixIcon: Icons.phone_outlined,
+                                ),
+                              ],
+                            ),
+                            verticalSpace32,
+                            PrimaryElevatedButton(
+                              text: appTranslation().get('save_changes'),
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.save_outlined,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                            ),
+                            verticalSpace16,
+                            Text(
+                              appTranslation().get('hipaa_compliance'),
+                              textAlign: TextAlign.center,
+                              style: TextStylesManager.regular12.copyWith(
+                                color: ColorsManager.textSecondary,
+                              ),
+                            ),
+                            verticalSpace40,
+                          ],
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-                verticalSpace24,
-                _buildSection(
-                  title: appTranslation().get('contact_details'),
-                  icon: Icons.phone_outlined,
-                  color: ColorsManager.primaryAction,
-                  children: [
-                    _buildField(
-                      label: appTranslation().get('phone_number'),
-                      hint: '+1 (202) 555-0143',
-                      suffixIcon: Icons.phone_iphone_outlined,
-                    ),
-                  ],
-                ),
-                verticalSpace24,
-                _buildSection(
-                  title: appTranslation().get('emergency_contact'),
-                  icon: Icons.emergency_outlined,
-                  color: Colors.redAccent,
-                  children: [
-                    _buildField(
-                      label: appTranslation().get('contact_name'),
-                      hint: 'Sarah Johnson',
-                    ),
-                    verticalSpace16,
-                    _buildField(
-                      label: appTranslation().get('relationship'),
-                      hint: 'Spouse',
-                    ),
-                    verticalSpace16,
-                    _buildField(
-                      label: appTranslation().get('phone_number'),
-                      hint: '+1 (202) 555-0188',
-                      suffixIcon: Icons.phone_outlined,
-                    ),
-                  ],
-                ),
-                verticalSpace32,
-                PrimaryElevatedButton(
-                  text: appTranslation().get('save_changes'),
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.save_outlined,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-                verticalSpace16,
-                Text(
-                  appTranslation().get('hipaa_compliance'),
-                  textAlign: TextAlign.center,
-                  style: TextStylesManager.regular12.copyWith(
-                    color: ColorsManager.textSecondary,
-                  ),
-                ),
-                verticalSpace40,
-              ],
-            ),
-          ),
-        );
-      },
+                      ),
+          );
+        },
+      ),
     );
   }
 
@@ -240,7 +239,7 @@ class PersonalInformationScreen extends StatelessWidget {
 
   Widget _buildField({
     required String label,
-    required String hint,
+    required String value,
     IconData? suffixIcon,
     bool readOnly = false,
   }) {
@@ -255,7 +254,7 @@ class PersonalInformationScreen extends StatelessWidget {
         ),
         verticalSpace8,
         PrimaryTextField(
-          controller: TextEditingController(text: hint),
+          controller: TextEditingController(text: value),
           hint: '',
           readOnly: readOnly,
           suffixIcon: suffixIcon != null

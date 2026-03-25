@@ -14,3 +14,5 @@ const String retirements = '/retirements/pending';
 const String tickets = '/tickets';
 
 const String approveTransfers = '/asset-transfers/batch/action';
+
+const String patientProfileApi = '/api/v1/patient/profile';

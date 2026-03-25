@@ -1,6 +1,7 @@
 import 'package:shefaa/core/network/remote/api_endpoints.dart';
 import 'package:shefaa/core/utils/cubit/auth/auth_cubit.dart';
 import 'package:shefaa/core/utils/cubit/theme/theme_cubit.dart';
+import 'package:shefaa/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,6 +15,9 @@ Future<void> initInjections() async {
   );
   sl.registerFactory(
     () => ThemeCubit(),
+  );
+  sl.registerFactory(
+    () => ProfileCubit(),
   );
 
   final sharedPref = await SharedPreferences.getInstance();
