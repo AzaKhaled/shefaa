@@ -12,7 +12,6 @@ import 'package:shefaa/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../constants/constants.dart';
 
 AuthCubit get authCubit => AuthCubit.get(navigatorKey.currentContext!);
 
@@ -76,19 +75,20 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthLoginErrorState(message: failure.toString()));
       },
       (response) {
-        final data = response.data as Map<String, dynamic>?;
+        final responseData = response.data as Map<String, dynamic>?;
         
-        bool isSuccess = data != null && 
-            (data['success'] == true || 
-             data['token'] != null || 
-             (data['message']?.toString().toLowerCase().contains('success') ?? false));
+        // التحقق من النجاح بناءً على وجود التوكن جوه الـ data object
+        bool isSuccess = responseData != null && 
+            (responseData['success'] == true || 
+             (responseData['data'] != null && responseData['data']['token'] != null) ||
+             (responseData['message']?.toString().toLowerCase().contains('success') ?? false));
 
         if (isSuccess) {
-          _handleLoginSuccess(data!);
-          debugPrint('✅ Login Success: $data');
+          _handleLoginSuccess(responseData!);
+          debugPrint('✅ Login Success Header: ${responseData['message']}');
           emit(AuthLoginSuccessState());
         } else {
-          emit(AuthLoginErrorState(message: data?['message'] ?? 'Login failed'));
+          emit(AuthLoginErrorState(message: responseData?['message'] ?? 'Login failed'));
         }
       },
     );
@@ -128,15 +128,26 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  void _handleLoginSuccess(Map<String, dynamic> data) {
-    token = data['token'] as String?;
-    CacheHelper.saveData(key: 'auth_token', value: token);
-    if (data['user'] != null) {
-      userModel = UserModel.fromJson(data['user'] as Map<String, dynamic>);
-      CacheHelper.saveData(
-        key: 'cached_user',
-        value: jsonEncode(userModel!.toJson()),
-      );
+  void _handleLoginSuccess(Map<String, dynamic> responseBody) {
+    // استخراج البيانات من داخل الـ data object
+    final innerData = responseBody['data'] as Map<String, dynamic>?;
+    
+    if (innerData != null) {
+      token = innerData['token'] as String?;
+      CacheHelper.saveData(key: 'auth_token', value: token);
+      
+      // Update ApiService token for future requests
+      if (token != null) {
+        ApiService.setToken(token!);
+      }
+      
+      if (innerData['user'] != null) {
+        userModel = UserModel.fromJson(innerData['user'] as Map<String, dynamic>);
+        CacheHelper.saveData(
+          key: 'cached_user',
+          value: jsonEncode(userModel!.toJson()),
+        );
+      }
     }
     _clearControllers();
   }

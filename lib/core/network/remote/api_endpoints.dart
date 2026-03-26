@@ -16,3 +16,6 @@ const String tickets = '/tickets';
 const String approveTransfers = '/asset-transfers/batch/action';
 
 const String patientProfileApi = '/api/v1/patient/profile';
+const String patientHomeApi = '/api/v1/patient/home';
+const String specialtiesApi = '/api/v1/specialties';
+const String doctorsApi = '/api/v1/doctors';

@@ -5,7 +5,10 @@ import 'package:shefaa/core/utils/constants/spacing.dart';
 import 'package:shefaa/core/utils/constants/assets_helper.dart';
 
 class ProfileHeaderWidget extends StatelessWidget {
-  const ProfileHeaderWidget({super.key});
+  final String? name;
+  final String? email;
+
+  const ProfileHeaderWidget({super.key, this.name, this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +46,14 @@ class ProfileHeaderWidget extends StatelessWidget {
         ),
         verticalSpace16,
         Text(
-          'Ahmed',
+          name ?? '---',
           style: TextStylesManager.bold22.copyWith(
             color: ColorsManager.textPrimary,
           ),
         ),
         verticalSpace4,
         Text(
-          'ahmed@example.com',
+          email ?? '---',
           style: TextStylesManager.regular14.copyWith(
             color: ColorsManager.textSecondary,
           ),

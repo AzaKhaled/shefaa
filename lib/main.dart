@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shefaa/core/di/injections.dart';
 import 'package:shefaa/core/network/local/cache_helper.dart';
+import 'package:shefaa/core/network/remote/api_service.dart';
 import 'package:shefaa/core/theme/theme.dart';
+import 'package:shefaa/core/utils/constants/constants.dart';
 import 'package:shefaa/core/utils/constants/my_bloc_observer.dart';
 import 'package:shefaa/core/utils/constants/routes.dart';
 import 'package:shefaa/core/utils/cubit/auth/auth_cubit.dart';
@@ -17,6 +19,12 @@ void main() async {
   await initInjections();
 
   Bloc.observer = MyBlocObserver();
+  
+  token = CacheHelper.getData(key: 'auth_token');
+  if (token != null) {
+    ApiService.setToken(token!);
+  }
+  
   final bool isDark = CacheHelper.getData(key: 'isDark') ?? false;
   final bool isArabic = CacheHelper.getData(key: 'isArabicLang') ?? true;
   final String translation = await rootBundle.loadString(
@@ -47,8 +55,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => themeCubit),
-
-        BlocProvider(create: (context) => sl<AuthCubit>()),
+        BlocProvider(create: (context) => sl<AuthCubit>()..loadCachedUser()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {

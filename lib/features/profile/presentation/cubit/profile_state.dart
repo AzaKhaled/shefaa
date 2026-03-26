@@ -15,3 +15,15 @@ class ProfileErrorState extends ProfileState {
   final String error;
   ProfileErrorState(this.error);
 }
+
+class UpdateProfileLoadingState extends ProfileState {}
+
+class UpdateProfileSuccessState extends ProfileState {
+  final PatientProfileModel profileModel;
+  UpdateProfileSuccessState(this.profileModel);
+}
+
+class UpdateProfileErrorState extends ProfileState {
+  final String error;
+  UpdateProfileErrorState(this.error);
+}

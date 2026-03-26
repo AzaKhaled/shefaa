@@ -13,11 +13,19 @@ class DioHelper {
     String? search,
   }) async {
     try {
+      debugPrint('🚀 GET Request: $url');
+      debugPrint('🔑 Sending Token: $token');
+      
       final Response response = await getDio().get(
         url,
-        queryParameters: {'q': ?search, ...?query},
+        queryParameters: {
+          if (search != null) 'q': search,
+          ...?query,
+        },
         options: Options(
           headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
             if (token != null && token!.isNotEmpty)
               'Authorization': 'Bearer $token',
           },
@@ -25,11 +33,13 @@ class DioHelper {
       );
       return Right(response);
     } on DioException catch (error) {
+      if (error.response?.statusCode == 401) {
+        return const Left('Unauthenticated');
+      }
       final msg = _parseError(error);
       return Left(msg);
     } catch (e) {
-      debugPrint('DioHelper.get error: $e');
-      return const Left('something went wrong, please try again later');
+      return const Left('something went wrong');
     }
   }
 
@@ -39,12 +49,15 @@ class DioHelper {
     Map<String, dynamic>? query,
   }) async {
     try {
+      debugPrint('🚀 POST Request: $url');
       final Response response = await getDio().post(
         url,
         data: data,
         queryParameters: query,
         options: Options(
           headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
             if (token != null && token!.isNotEmpty)
               'Authorization': 'Bearer $token',
           },
@@ -55,24 +68,46 @@ class DioHelper {
       final msg = _parseError(error);
       return Left(msg);
     } catch (e) {
-      debugPrint('DioHelper.post error: $e');
-      return const Left('something went wrong, please try again later');
+      return const Left('something went wrong');
+    }
+  }
+
+  static Future<Either<String, Response>> putData({
+    required String url,
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? query,
+  }) async {
+    try {
+      debugPrint('🚀 PUT Request: $url');
+      final Response response = await getDio().put(
+        url,
+        data: data,
+        queryParameters: query,
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            if (token != null && token!.isNotEmpty)
+              'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      return Right(response);
+    } on DioException catch (error) {
+      final msg = _parseError(error);
+      return Left(msg);
+    } catch (e) {
+      return const Left('something went wrong');
     }
   }
 
   static String _parseError(DioException error) {
     final response = error.response;
     if (response == null) return 'No response from server';
-
     if (response.data is Map) {
       final map = response.data as Map;
-      if (map['errors'] is List && map['errors'].isNotEmpty) {
-        return map['errors'].first.toString();
-      }
-      if (map['message'] != null) {
-        return map['message'].toString();
-      }
+      return map['message']?.toString() ?? map['errors']?.toString() ?? 'Error ${response.statusCode}';
     }
-    return 'Error: ${response.statusCode ?? 'unknown'}';
+    return 'Error: ${response.statusCode}';
   }
 }

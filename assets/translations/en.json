@@ -191,5 +191,13 @@
   "doctor_sara": "Dr. Sarah Jenkins • June 2023",
   "doctor_alan": "Dr. Alan Smith • March 2023",
   "prescription_date": "March 31, 2026",
-  "patient_name_age": "Eman Mohamed (24 years)"
+  "patient_name_age": "Eman Mohamed (24 years)",
+  "hello": "Hello",
+  "next_appointment": "Next Appointment",
+  "online_consult": "Online Consult",
+  "medical_file": "Medical file",
+  "top_doctors": "Top Doctors",
+  "see_all": "See All",
+  "claim_now": "CLAIM NOW",
+  "book_appointment_short": "Book Appointment"
 }

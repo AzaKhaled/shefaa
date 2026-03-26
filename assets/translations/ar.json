@@ -101,5 +101,13 @@
   "doctor_sara": "د. سارة جينكينز • يونيو 2023",
   "doctor_alan": "د. آلان سميث • مارس 2023",
   "prescription_date": "31 مارس 2026",
-  "patient_name_age": "إيمان محمد (24 عاماً)"
+  "patient_name_age": "إيمان محمد (24 عاماً)",
+  "hello": "أهلاً",
+  "next_appointment": "الموعد القادم",
+  "online_consult": "استشارة أونلاين",
+  "medical_file": "الملف الطبي",
+  "top_doctors": "أفضل الأطباء",
+  "see_all": "شاهد الكل",
+  "claim_now": "احصل عليه الآن",
+  "book_appointment_short": "حجز موعد"
 }

@@ -8,20 +8,80 @@ import 'package:shefaa/core/utils/constants/constants.dart';
 import 'package:shefaa/core/utils/constants/spacing.dart';
 import 'package:shefaa/core/utils/constants/primary/primary_text_field.dart';
 import 'package:shefaa/core/utils/constants/primary/primary_elevated_button.dart';
+import 'package:shefaa/core/utils/extensions/context_extension.dart';
 import 'package:shefaa/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:shefaa/features/profile/presentation/cubit/profile_state.dart';
 
-class PersonalInformationScreen extends StatelessWidget {
+class PersonalInformationScreen extends StatefulWidget {
   const PersonalInformationScreen({super.key});
+
+  @override
+  State<PersonalInformationScreen> createState() => _PersonalInformationScreenState();
+}
+
+class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
+  final nameController = TextEditingController();
+  final nationalIdController = TextEditingController();
+  final dobController = TextEditingController();
+  final genderController = TextEditingController();
+  final phoneController = TextEditingController();
+  final emailController = TextEditingController();
+  final emergencyNameController = TextEditingController();
+  final emergencyPhoneController = TextEditingController();
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    nationalIdController.dispose();
+    dobController.dispose();
+    genderController.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    emergencyNameController.dispose();
+    emergencyPhoneController.dispose();
+    super.dispose();
+  }
+
+  void _populateControllers(ProfileState state) {
+    if (state is ProfileSuccessState) {
+      final user = state.profileModel.data?.user;
+      final patient = state.profileModel.data?.patient;
+
+      nameController.text = user?.name ?? '';
+      nationalIdController.text = patient?.nationalId ?? '';
+      dobController.text = patient?.dateOfBirth?.split('T').first ?? '';
+      genderController.text = patient?.gender ?? '';
+      phoneController.text = user?.phone ?? '';
+      emailController.text = user?.email ?? '';
+      emergencyNameController.text = patient?.emergencyContactName ?? '';
+      emergencyPhoneController.text = patient?.emergencyContactPhone ?? '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<ProfileCubit>()..getPatientProfile(),
-      child: BlocBuilder<ProfileCubit, ProfileState>(
+      child: BlocConsumer<ProfileCubit, ProfileState>(
+        listener: (context, state) {
+          if (state is ProfileSuccessState) {
+            _populateControllers(state);
+
+          }
+          if (state is UpdateProfileSuccessState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Profile updated successfully!'), backgroundColor: Colors.green),
+            );
+            context.pop;
+          }
+          if (state is UpdateProfileErrorState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.error), backgroundColor: Colors.red),
+            );
+          }
+        },
         builder: (context, state) {
           var cubit = ProfileCubit.get(context);
-          var user = cubit.profileModel?.data?.user;
           var patient = cubit.profileModel?.data?.patient;
 
           return Scaffold(
@@ -31,133 +91,120 @@ class PersonalInformationScreen extends StatelessWidget {
               elevation: 0,
               automaticallyImplyLeading: false,
               leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  color: ColorsManager.textPrimary,
-                ),
+                icon: Icon(Icons.arrow_back_ios, color: ColorsManager.textPrimary),
                 onPressed: () => Navigator.pop(context),
               ),
               title: Text(
                 appTranslation().get('personal_information'),
-                style: TextStylesManager.bold16.copyWith(
-                  color: ColorsManager.textPrimary,
-                ),
+                style: TextStylesManager.bold16.copyWith(color: ColorsManager.textPrimary),
               ),
               centerTitle: true,
             ),
             body: state is ProfileLoadingState
                 ? const Center(child: CircularProgressIndicator())
-                : state is ProfileErrorState
-                    ? Center(child: Text(state.error))
-                    : SingleChildScrollView(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Column(
-                          children: [
-                            verticalSpace24,
-                            _buildProfileImage(),
-                            verticalSpace12,
-                            Text(
-                              user?.name ?? '---',
-                              style: TextStylesManager.bold18.copyWith(
-                                color: ColorsManager.textPrimary,
-                              ),
-                            ),
-                            verticalSpace4,
-                            Text(
-                              'Patient ID: #${patient?.patientCode ?? '---'}',
-                              style: TextStylesManager.regular14.copyWith(
-                                color: ColorsManager.textSecondary,
-                              ),
-                            ),
-                            verticalSpace32,
-                            _buildSection(
-                              title: appTranslation().get('basic_details'),
-                              icon: Icons.person_outline,
-                              color: ColorsManager.primaryAction,
-                              children: [
-                                _buildField(
-                                  label: appTranslation().get('full_name'),
-                                  value: user?.name ?? '',
-                                ),
-                                verticalSpace16,
-                                _buildField(
-                                  label: appTranslation().get('national_id'),
-                                  value: patient?.nationalId ?? '',
-                                ),
-                                verticalSpace16,
-                                _buildField(
-                                  label: appTranslation().get('date_of_birth'),
-                                  value: patient?.dateOfBirth?.split('T').first ?? '',
-                                  suffixIcon: Icons.calendar_today_outlined,
-                                ),
-                                verticalSpace16,
-                                _buildField(
-                                  label: appTranslation().get('gender'),
-                                  value: patient?.gender ?? '',
-                                  suffixIcon: Icons.keyboard_arrow_down,
-                                  readOnly: true,
-                                ),
-                              ],
-                            ),
-                            verticalSpace24,
-                            _buildSection(
-                              title: appTranslation().get('contact_details'),
-                              icon: Icons.phone_outlined,
-                              color: ColorsManager.primaryAction,
-                              children: [
-                                _buildField(
-                                  label: appTranslation().get('phone_number'),
-                                  value: user?.phone ?? '',
-                                  suffixIcon: Icons.phone_iphone_outlined,
-                                ),
-                                verticalSpace16,
-                                _buildField(
-                                  label: appTranslation().get('email'),
-                                  value: user?.email ?? '',
-                                  suffixIcon: Icons.email_outlined,
-                                ),
-                              ],
-                            ),
-                            verticalSpace24,
-                            _buildSection(
-                              title: appTranslation().get('emergency_contact'),
-                              icon: Icons.emergency_outlined,
-                              color: Colors.redAccent,
-                              children: [
-                                _buildField(
-                                  label: appTranslation().get('contact_name'),
-                                  value: patient?.emergencyContactName ?? '---',
-                                ),
-                                verticalSpace16,
-                                _buildField(
-                                  label: appTranslation().get('phone_number'),
-                                  value: patient?.emergencyContactPhone ?? '---',
-                                  suffixIcon: Icons.phone_outlined,
-                                ),
-                              ],
-                            ),
-                            verticalSpace32,
-                            PrimaryElevatedButton(
-                              text: appTranslation().get('save_changes'),
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.save_outlined,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                            ),
-                            verticalSpace16,
-                            Text(
-                              appTranslation().get('hipaa_compliance'),
-                              textAlign: TextAlign.center,
-                              style: TextStylesManager.regular12.copyWith(
-                                color: ColorsManager.textSecondary,
-                              ),
-                            ),
-                            verticalSpace40,
-                          ],
-                        ),
+                : SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  verticalSpace24,
+                  _buildProfileImage(),
+                  verticalSpace12,
+                  Text(
+                    nameController.text.isNotEmpty ? nameController.text : '---',
+                    style: TextStylesManager.bold18.copyWith(color: ColorsManager.textPrimary),
+                  ),
+                  verticalSpace4,
+                  Text(
+                    'Patient ID: #${patient?.patientCode ?? '---'}',
+                    style: TextStylesManager.regular14.copyWith(color: ColorsManager.textSecondary),
+                  ),
+                  verticalSpace32,
+                  _buildSection(
+                    title: appTranslation().get('basic_details'),
+                    icon: Icons.person_outline,
+                    color: ColorsManager.primaryAction,
+                    children: [
+                      _buildField(label: appTranslation().get('full_name'), controller: nameController),
+                      verticalSpace16,
+                      _buildField(label: appTranslation().get('national_id'), controller: nationalIdController),
+                      verticalSpace16,
+                      _buildField(
+                        label: appTranslation().get('date_of_birth'),
+                        controller: dobController,
+                        suffixIcon: Icons.calendar_today_outlined,
                       ),
+                      verticalSpace16,
+                      _buildField(
+                        label: appTranslation().get('gender'),
+                        controller: genderController,
+                        suffixIcon: Icons.keyboard_arrow_down,
+                        readOnly: true,
+                      ),
+                    ],
+                  ),
+                  verticalSpace24,
+                  _buildSection(
+                    title: appTranslation().get('contact_details'),
+                    icon: Icons.phone_outlined,
+                    color: ColorsManager.primaryAction,
+                    children: [
+                      _buildField(
+                        label: appTranslation().get('phone_number'),
+                        controller: phoneController,
+                        suffixIcon: Icons.phone_iphone_outlined,
+                      ),
+                      verticalSpace16,
+                      _buildField(
+                        label: appTranslation().get('email'),
+                        controller: emailController,
+                        suffixIcon: Icons.email_outlined,
+                      ),
+                    ],
+                  ),
+                  verticalSpace24,
+                  _buildSection(
+                    title: appTranslation().get('emergency_contact'),
+                    icon: Icons.emergency_outlined,
+                    color: Colors.redAccent,
+                    children: [
+                      _buildField(label: appTranslation().get('contact_name'), controller: emergencyNameController),
+                      verticalSpace16,
+                      _buildField(
+                        label: appTranslation().get('phone_number'),
+                        controller: emergencyPhoneController,
+                        suffixIcon: Icons.phone_outlined,
+                      ),
+                    ],
+                  ),
+                  verticalSpace32,
+                  state is UpdateProfileLoadingState
+                      ? const CircularProgressIndicator()
+                      : PrimaryElevatedButton(
+                    text: appTranslation().get('save_changes'),
+                    onPressed: () {
+                      cubit.updatePatientProfile(
+                        name: nameController.text,
+                        phone: phoneController.text,
+                        email: emailController.text,
+                        nationalId: nationalIdController.text,
+                        dateOfBirth: dobController.text,
+                        gender: genderController.text,
+                        emergencyContactName: emergencyNameController.text,
+                        emergencyContactPhone: emergencyPhoneController.text,
+                      );
+                    },
+                    icon: const Icon(Icons.save_outlined, color: Colors.white, size: 20),
+                  ),
+                  verticalSpace16,
+                  Text(
+                    appTranslation().get('hipaa_compliance'),
+                    textAlign: TextAlign.center,
+                    style: TextStylesManager.regular12.copyWith(color: ColorsManager.textSecondary),
+                  ),
+                  verticalSpace40,
+                ],
+              ),
+            ),
           );
         },
       ),
@@ -173,14 +220,8 @@ class PersonalInformationScreen extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: ColorsManager.surfacePrimary,
-            border: Border.all(
-              color: ColorsManager.primaryColor.withValues(alpha: 0.1),
-              width: 4,
-            ),
-            image: const DecorationImage(
-              image: AssetImage(AssetsHelper.person),
-              fit: BoxFit.cover,
-            ),
+            border: Border.all(color: ColorsManager.primaryColor.withValues(alpha: 0.1), width: 4),
+            image: const DecorationImage(image: AssetImage(AssetsHelper.person), fit: BoxFit.cover),
           ),
         ),
         Positioned(
@@ -193,11 +234,7 @@ class PersonalInformationScreen extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(color: ColorsManager.background, width: 2),
             ),
-            child: const Icon(
-              Icons.camera_alt_outlined,
-              color: Colors.white,
-              size: 16,
-            ),
+            child: const Icon(Icons.camera_alt_outlined, color: Colors.white, size: 16),
           ),
         ),
       ],
@@ -224,10 +261,7 @@ class PersonalInformationScreen extends StatelessWidget {
             children: [
               Icon(icon, color: color, size: 20),
               horizontalSpace8,
-              Text(
-                title,
-                style: TextStylesManager.bold14.copyWith(color: color),
-              ),
+              Text(title, style: TextStylesManager.bold14.copyWith(color: color)),
             ],
           ),
           verticalSpace16,
@@ -239,27 +273,20 @@ class PersonalInformationScreen extends StatelessWidget {
 
   Widget _buildField({
     required String label,
-    required String value,
+    required TextEditingController controller,
     IconData? suffixIcon,
     bool readOnly = false,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TextStylesManager.regular12.copyWith(
-            color: ColorsManager.textSecondary,
-          ),
-        ),
+        Text(label, style: TextStylesManager.regular12.copyWith(color: ColorsManager.textSecondary)),
         verticalSpace8,
         PrimaryTextField(
-          controller: TextEditingController(text: value),
+          controller: controller,
           hint: '',
           readOnly: readOnly,
-          suffixIcon: suffixIcon != null
-              ? Icon(suffixIcon, color: ColorsManager.textSecondary, size: 20)
-              : null,
+          suffixIcon: suffixIcon != null ? Icon(suffixIcon, color: ColorsManager.textSecondary, size: 20) : null,
           fillColor: ColorsManager.background,
         ),
       ],

@@ -1,21 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shefaa/core/theme/colors.dart';
 import 'package:shefaa/core/theme/text_styles.dart';
 import 'package:shefaa/core/utils/constants/constants.dart';
 import 'package:shefaa/core/utils/constants/spacing.dart';
+import 'package:shefaa/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:shefaa/features/profile/presentation/cubit/profile_state.dart';
 
 class ProfileStatsWidget extends StatelessWidget {
   const ProfileStatsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _StatCardWidget(title: appTranslation().get('blood_type'), value: 'O+'),
-        _StatCardWidget(title: appTranslation().get('height'), value: '182 ${appTranslation().get('cm')}'),
-        _StatCardWidget(title: appTranslation().get('weight'), value: '78 ${appTranslation().get('kg')}'),
-      ],
+    return BlocBuilder<ProfileCubit, ProfileState>(
+      builder: (context, state) {
+
+        final patient = ProfileCubit.get(context).profileModel?.data?.patient;
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _StatCardWidget(
+              title: appTranslation().get('blood_type'),
+              value: patient?.bloodType ?? '---',
+
+            ),
+            _StatCardWidget(
+              title: appTranslation().get('height'),
+              value: '120 ${appTranslation().get('cm')}',
+            ),
+            _StatCardWidget(
+              title: appTranslation().get('weight'),
+              value: '60 ${appTranslation().get('kg')}',
+            ),
+          ],
+        );
+      },
     );
   }
 }

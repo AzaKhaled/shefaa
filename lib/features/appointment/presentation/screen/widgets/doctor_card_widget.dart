@@ -7,8 +7,10 @@ import 'package:shefaa/core/utils/constants/routes.dart';
 import 'package:shefaa/core/utils/constants/spacing.dart';
 import 'package:shefaa/core/utils/extensions/context_extension.dart';
 
+import 'package:shefaa/features/appointment/domain/entities/doctor.dart';
+
 class DoctorCardWidget extends StatelessWidget {
-  final Map<String, dynamic> doctor;
+  final Doctor doctor;
 
   const DoctorCardWidget({super.key, required this.doctor});
 
@@ -42,7 +44,7 @@ class DoctorCardWidget extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        doctor['name'],
+                        doctor.name,
                         style: TextStylesManager.bold16.copyWith(
                           color: ColorsManager.textPrimary,
                         ),
@@ -70,7 +72,7 @@ class DoctorCardWidget extends StatelessWidget {
                           ),
                           horizontalSpace4,
                           Text(
-                            doctor['rating'].toString(),
+                            '4.8', // doctor['rating'].toString(),
                             style: TextStylesManager.bold12.copyWith(
                               color: ColorsManager.ratingText,
                             ),
@@ -82,7 +84,7 @@ class DoctorCardWidget extends StatelessWidget {
                 ),
                 verticalSpace4,
                 Text(
-                  '${doctor['specialty']} • ${doctor['exp']} ${appTranslation().get('years_exp')}',
+                  '${doctor.specialty} • ${doctor.yearsOfExperience} ${appTranslation().get('years_exp')}',
                   style: TextStylesManager.regular12.copyWith(
                     color: ColorsManager.textSecondary,
                   ),
@@ -109,7 +111,7 @@ class DoctorCardWidget extends StatelessWidget {
                         ),
                         verticalSpace4,
                         Text(
-                          '\$${doctor['fee']}',
+                          '\$150', // '\$${doctor['fee']}',
                           style: TextStylesManager.bold18.copyWith(
                             color: ColorsManager.primaryAction,
                           ),
